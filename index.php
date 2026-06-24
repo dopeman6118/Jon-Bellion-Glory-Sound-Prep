@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Glory Sound Prep</title>
     <style>
-      /* ====== CSS VARIABLES & DESIGN SYSTEM ====== */
+      /* CSS VARIABLES & DESIGN SYSTEM */
       :root {
         --surface: rgba(255, 255, 255, 0.06); /* translucent section background */
         --text: #f8fafc; /* page text color */
         --radius: 16px; /* consistent border radius */
       }
 
-      /* ====== BASE LAYOUT ====== */
+      /* BASE LAYOUT */
       * { box-sizing: border-box; }
       body {
         margin: 0;
@@ -25,7 +25,7 @@
       }
       .site { max-width: 1100px; margin: 0 auto; padding: 100px 20px; }
 
-      /* ====== NAVBAR ====== */
+      /* NAVBAR */
       .navbar {
         position: fixed;
         inset: 0 0 auto 0;
@@ -41,7 +41,7 @@
       nav.nav-list { display: flex; gap: 18px; }
       a.nav-link { color: var(--text); text-decoration: none; }
 
-      /* ====== PAGE SECTIONS ====== */
+      /* PAGE SECTIONS */
       .section {
         background: var(--surface);
         border-radius: var(--radius);
@@ -50,7 +50,7 @@
         scroll-margin-top: 96px; /* compensates for fixed header */
       }
 
-      /* ====== TRACKS & MEDIA (ALBUM PLAYER) ====== */
+      /* TRACKS & MEDIA (ALBUM PLAYER) */
       .tracks { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
       .album-art { width: 100%; max-width: 320px; border-radius: 12px; }
       .top-content { display: flex; gap: 24px; align-items: flex-start; }
@@ -64,7 +64,7 @@
       }
       .track-list li:last-child { margin-bottom: 0; }
 
-      /* ====== LYRICS DISPLAY ====== */
+      /* LYRICS DISPLAY */
       .lyrics {
         width: 100%;
         max-width: 560px;
@@ -75,7 +75,7 @@
         max-height: 220px;
       }
       .lyrics-heading { font-weight: 600; margin-bottom: 8px; }
-      /* ====== MAP CONTAINER ====== */
+      /* MAP CONTAINER */
       .map-container {
         width: 100%;
         max-width: 560px;
@@ -188,7 +188,7 @@
         var player = document.getElementById('player');
         if (track && track.audio) {
           player.src = track.audio;
-          try { player.play(); } catch (e) { /* ignore autoplay errors */ }
+          try { player.play(); } catch (e)
         }
 
         if (track && track.lyrics) {
