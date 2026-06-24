@@ -8,9 +8,9 @@
     <style>
       /* CSS VARIABLES & DESIGN SYSTEM */
       :root {
-        --surface: rgba(255, 255, 255, 0.06); /* translucent section background */
-        --text: #f8fafc; /* page text color */
-        --radius: 16px; /* consistent border radius */
+        --surface: rgba(255, 255, 255, 0.06);
+        --text: #f8fafc;
+        --radius: 16px;
       }
 
       /* BASE LAYOUT */
@@ -178,7 +178,8 @@
         "Mah's Joint (feat. Quincy Jones)": { audio: "Mah's Joint.mp3", lyrics: "Mah's Joint lyrics.txt" }
       };
 
-      // HELPER - escape HTML to prevent special chars from breaking display\n      function escapeHtml(s) {
+      // HELPER - escape HTML to prevent special chars from breaking display
+      function escapeHtml(s) {
         return s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
       }
 
@@ -188,7 +189,11 @@
         var player = document.getElementById('player');
         if (track && track.audio) {
           player.src = track.audio;
-          try { player.play(); } catch (e)
+          try {
+            player.play();
+          } catch (e) {
+            console.warn('Audio playback blocked or unavailable:', e);
+          }
         }
 
         if (track && track.lyrics) {
