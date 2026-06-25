@@ -1,3 +1,17 @@
+﻿<?php
+// handle POST and redirect with a simple confirmation flag
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name'], $_POST['email'], $_POST['message'])) {
+  $base = strtok($_SERVER['REQUEST_URI'], '?');
+  header('Location: ' . $base . '?sent=1#contacts');
+  exit;
+}
+
+$message = '';
+if (isset($_GET['sent']) && $_GET['sent'] === '1') {
+  $message = '<p style="margin-top: 24px; font-weight: 600;">Thanks! Your message was received.</p>';
+}
+?>
+
 <!doctype html>
 
 <html lang="en">
@@ -6,14 +20,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Glory Sound Prep</title>
     <style>
-      /* CSS VARIABLES & DESIGN SYSTEM */
       :root {
         --surface: rgba(255, 255, 255, 0.06);
         --text: #f8fafc;
         --radius: 16px;
       }
-
-      /* BASE LAYOUT */
       * { box-sizing: border-box; }
       body {
         margin: 0;
@@ -25,7 +36,6 @@
       }
       .site { max-width: 1100px; margin: 0 auto; padding: 100px 20px; }
 
-      /* NAVBAR */
       .navbar {
         position: fixed;
         inset: 0 0 auto 0;
@@ -41,7 +51,6 @@
       nav.nav-list { display: flex; gap: 18px; }
       a.nav-link { color: var(--text); text-decoration: none; }
 
-      /* PAGE SECTIONS */
       .section {
         background: var(--surface);
         border-radius: var(--radius);
@@ -50,7 +59,6 @@
         scroll-margin-top: 96px; /* compensates for fixed header */
       }
 
-      /* TRACKS & MEDIA (ALBUM PLAYER) */
       .tracks { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
       .album-art { width: 100%; max-width: 320px; border-radius: 12px; }
       .top-content { display: flex; gap: 24px; align-items: flex-start; }
@@ -64,7 +72,6 @@
       }
       .track-list li:last-child { margin-bottom: 0; }
 
-      /* LYRICS DISPLAY */
       .lyrics {
         width: 100%;
         max-width: 560px;
@@ -74,16 +81,86 @@
         overflow-y: scroll;
         max-height: 220px;
       }
-      .lyrics-heading { font-weight: 600; margin-bottom: 8px; }
-      /* MAP CONTAINER */
+
+      .lyrics-heading {
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
       .map-container {
         width: 100%;
-        max-width: 560px;
-        height: 320px;
+        height: 380px;
         border-radius: 12px;
         overflow: hidden;
-        flex: 1;
       }
+
+      .contacts-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      form div {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      label {
+        font-weight: 600;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      
+      textarea {
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        color: var(--text);
+        font-family: inherit;
+        font-size: 14px;
+      }
+
+      input[type="text"]:focus,
+      input[type="email"]:focus,
+
+      textarea:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.5);
+        background: rgba(0, 0, 0, 0.5);
+      }
+
+      input[type="submit"] {
+        padding: 12px 24px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        color: var(--text);
+        font-weight: 600;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      input[type="submit"]:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.5);
+      }
+
     </style>
   </head>
   <body>
@@ -94,27 +171,17 @@
         <a class="nav-link" href="#top">Home</a>
         <a class="nav-link" href="#about">About</a>
         <a class="nav-link" href="#tracks">Tracks</a>
+        <a class="nav-link" href="#contacts">Contacts</a>
       </nav>
     </header>
 
     <main class="site">
       <!-- HOME SECTION: Album title + Map + Album art -->
       <section id="top" class="section">
-        <h1>Glory Sound Prep</h1>
         <div class="top-content">
           <img src="Glory Sound Prep.png" alt="Album art" class="album-art">
-          <div class="map-container">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48322.2928470982!2d-73.37847649094331!3d40.802844642445194!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e82e8d90aedb1f%3A0xdff32f1f71fa55c7!2sDix%20Hills%2C%20NY%2C%20USA!5e0!3m2!1sen!2sph!4v1782251942218!5m2!1sen!2sph"
-              width="100%"
-              height="100%"
-              style="border:0;"
-              allowfullscreen=""
-              loading="lazy"
-              referrerpolicy="strict-origin-when-cross-origin"
-            ></iframe>
-          </div>
         </div>
+        <h1>Glory Sound Prep</h1>
       </section>
 
       <!-- ABOUT SECTION: Album info -->
@@ -135,23 +202,21 @@
           <div class="track-list">
             <h2>Track list</h2>
             <ol>
-              <li onclick="setTrack('Conversations With My Wife')">Conversations With My Wife</li>
-              <li onclick="setTrack('JT')">JT</li>
-              <li onclick="setTrack('Let\'s Begin (feat. Roc Marciano, RZA, B.Keyz & Travis Mendes)')">Let's Begin (feat. Roc Marciano, RZA, B.Keyz &amp; Travis Mendes)</li>
-              <li onclick="setTrack('Stupid Deep')">Stupid Deep</li>
-              <li onclick="setTrack('The Internet')">The Internet</li>
-              <li onclick="setTrack('Blu')">Blu</li>
-              <li onclick="setTrack('Adult Swim (feat. Tuamie)')">Adult Swim (feat. Tuamie)</li>
-              <li onclick="setTrack('Couples Retreat')">Couples Retreat</li>
-              <li onclick="setTrack('Cautionary Tales')">Cautionary Tales</li>
-              <li onclick="setTrack('Mah\'s Joint (feat. Quincy Jones)')">Mah's Joint (feat. Quincy Jones)</li>
+              <li onclick="setTrack(this)" data-audio="Conversations with my Wife.mp3" data-lyrics="Conversation with my Wife lyrics.txt">Conversations With My Wife</li>
+              <li onclick="setTrack(this)" data-audio="JT.mp3" data-lyrics="JT lyrics.txt">JT</li>
+              <li onclick="setTrack(this)" data-audio="Let's Begin.mp3" data-lyrics="Let's Begin lyrics.txt">Let's Begin (feat. Roc Marciano, RZA, B.Keyz &amp; Travis Mendes)</li>
+              <li onclick="setTrack(this)" data-audio="Stupid Deep.mp3" data-lyrics="Stupid Deep lyrics.txt">Stupid Deep</li>
+              <li onclick="setTrack(this)" data-audio="The Internet.mp3" data-lyrics="The Internet lyrics.txt">The Internet</li>
+              <li onclick="setTrack(this)" data-audio="Blu.mp3" data-lyrics="Blu lyrics.txt">Blu</li>
+              <li onclick="setTrack(this)" data-audio="Adult Swim.mp3" data-lyrics="Adult Swim lyrics.txt">Adult Swim (feat. Tuamie)</li>
+              <li onclick="setTrack(this)" data-audio="Couple's Retreat.mp3" data-lyrics="Couples Retreat lyrics.txt">Couples Retreat</li>
+              <li onclick="setTrack(this)" data-audio="Cautionary Tales.mp3" data-lyrics="Cautionary Tales lyrics.txt">Cautionary Tales</li>
+              <li onclick="setTrack(this)" data-audio="Mah's Joint.mp3" data-lyrics="Mah's Joint lyrics.txt">Mah's Joint (feat. Quincy Jones)</li>
             </ol>
           </div>
 
           <div class="media">
-            <audio id="player" controls>
-              <source src="Stupid Deep.mp3" type="audio/mpeg">
-            </audio>
+            <audio id="player" controls src="Stupid Deep.mp3"></audio>
 
             <div id="lyrics" class="lyrics" aria-live="polite">
               <div class="lyrics-heading">Lyrics</div>
@@ -160,35 +225,59 @@
           </div>
         </div>
       </section>
+
+      <!-- CONTACTS SECTION: Contact form with PHP backend -->
+      <section id="contacts" class="section">
+        <h1>Contacts</h1>
+        <div class="contacts-grid">
+          <div>
+            <form method="POST" action="">
+              <div>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+              </div>
+              <div>
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="6" required></textarea>
+              </div>
+              <input type="submit" value="Send Message">
+            </form>
+            <?php echo $message; ?>
+          </div>
+          <div class="map-container">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48322.2928470982!2d-73.37847649094331!3d40.802844642445194!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e82e8d90aedb1f%3A0xdff32f1f71fa55c7!2sDix%20Hills%2C%20NY%2C%20USA!5e0!3m2!1sen!2sph!4v1782251942218!5m2!1sen!2sph"
+              width="100%"
+              height="100%"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- JAVASCRIPT: Audio player + Lyrics loader -->
     <script>
-      // TRACK DATA - maps displayed titles to audio and lyrics filenames
-      var trackData = {
-        "Conversations With My Wife": { audio: "Conversations with my Wife.mp3", lyrics: "Conversation with my Wife lyrics.txt" },
-        "JT": { audio: "JT.mp3", lyrics: "JT lyrics.txt" },
-        "Let's Begin (feat. Roc Marciano, RZA, B.Keyz & Travis Mendes)": { audio: "Let's Begin.mp3", lyrics: "Let's Begin lyrics.txt" },
-        "Stupid Deep": { audio: "Stupid Deep.mp3", lyrics: "Stupid Deep lyrics.txt" },
-        "The Internet": { audio: "The Internet.mp3", lyrics: "The Internet lyrics.txt" },
-        "Blu": { audio: "Blu.mp3", lyrics: "Blu lyrics.txt" },
-        "Adult Swim (feat. Tuamie)": { audio: "Adult Swim.mp3", lyrics: "Adult Swim lyrics.txt" },
-        "Couples Retreat": { audio: "Couple's Retreat.mp3", lyrics: "Couples Retreat lyrics.txt" },
-        "Cautionary Tales": { audio: "Cautionary Tales.mp3", lyrics: "Cautionary Tales lyrics.txt" },
-        "Mah's Joint (feat. Quincy Jones)": { audio: "Mah's Joint.mp3", lyrics: "Mah's Joint lyrics.txt" }
-      };
-
-      // HELPER - escape HTML to prevent special chars from breaking display
+      // helper: escape HTML
       function escapeHtml(s) {
         return s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
       }
 
-      // MAIN PLAYER - when user clicks a track, play audio and load lyrics
-      function setTrack(trackName) {
-        var track = trackData[trackName];
+      // main player: set track and load lyrics
+      function setTrack(element) {
+        var audioFile = element.getAttribute('data-audio');
+        var lyricsFile = element.getAttribute('data-lyrics');
         var player = document.getElementById('player');
-        if (track && track.audio) {
-          player.src = track.audio;
+
+        if (audioFile) {
+          player.src = audioFile;
           try {
             player.play();
           } catch (e) {
@@ -196,15 +285,14 @@
           }
         }
 
-        if (track && track.lyrics) {
-          loadLyrics(track.lyrics);
+        if (lyricsFile) {
+          loadLyrics(lyricsFile);
         } else {
           document.getElementById('lyricsContent').textContent = 'Lyrics unavailable.';
         }
       }
 
-      // LOAD LYRICS - fetch and display track lyrics from text files
-      // converts newlines to <br> for proper formatting
+      // load lyrics from text file and display
       function loadLyrics(fileName) {
         fetch(fileName)
           .then(function(response) {
@@ -218,6 +306,10 @@
           .catch(function() {
             document.getElementById('lyricsContent').textContent = 'Lyrics unavailable.';
           });
+      }
+
+      if (window.location.search.indexOf('sent=1') !== -1) {
+        window.history.replaceState(null, '', window.location.pathname + '#contacts');
       }
     </script>
   </body>
